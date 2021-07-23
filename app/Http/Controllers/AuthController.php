@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -23,9 +25,34 @@ class AuthController extends Controller
                 'token' => $token
             ]
         ]);
+    }
 
-//        return response([
-//            'success' => $user->createToken('API Token')->plainTextToken
-//        ]);
+    public function login(UserLoginRequest $request)
+    {
+        $user = User::where("email", $request->email)->first();
+        if (! Hash::check($request->password, $user->password, []))
+        {
+            return response()->json([
+                'errors' => [
+                    'email' => ['error detail not correct']
+                ]
+            ], 401);
+        }
+        $user->tokens()->delete();
+        $token = $user->createToken('API Token')->plainTextToken;
+        return (new UserResource($user))->additional([
+            'meta' => [
+                'token' => $token
+            ]
+        ]);
+    }
+
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+
+        return [
+            'message' => 'Tokens Revoked'
+        ];
     }
 }
