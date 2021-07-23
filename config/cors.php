@@ -30,5 +30,6 @@ return [
     'max_age' => 0,
 
     'supports_credentials' => false,
+    //    'allowed_origins' => ['http://localhost:8080', 'https://client.myapp.com']
 
 ];
