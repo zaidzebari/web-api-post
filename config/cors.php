@@ -14,8 +14,9 @@ return [
     | To learn more: https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
     |
     */
+    "Accept"=>"application/json",
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/*'],
 
     'allowed_methods' => ['*'],
 
@@ -29,7 +30,7 @@ return [
 
     'max_age' => 0,
 
-    'supports_credentials' => false,
+    'supports_credentials' => true,
     //    'allowed_origins' => ['http://localhost:8080', 'https://client.myapp.com']
 
 ];
