@@ -29,7 +29,7 @@ class AuthController extends Controller
 
     public function login(UserLoginRequest $request)
     {
-        $user = User::where("email", $request->email)->first();
+        $user = auth()->attempt($request->only('email', 'password'));  // = User::where("email", $request->email)->first();
         if (!$user) {
             return response()->json([
                 'errors' => [
@@ -37,18 +37,19 @@ class AuthController extends Controller
                 ]
             ], 422);
         }
-        if (! Hash::check($request->password, $user->password, []))
-        {
-            return response()->json([
-                'errors' => [
-                    'email' => ['error detail not correct']
-                ]
-            ], 401);
-        }
-        $user->tokens()->delete();
+//        if (! Hash::check($request->password, $user->password, []))
+//        {
+//            return response()->json([
+//                'errors' => [
+//                    'email' => ['error detail not correct']
+//                ]
+//            ], 401);
+//        }
+//        $request->session()->regenerate();
+        auth()->user()->tokens()->delete();
 
-        $token = $user->createToken('API Token')->plainTextToken;
-        return (new UserResource($user))->additional([
+        $token = auth()->user()->createToken('API Token')->plainTextToken;
+        return (new UserResource(auth()->user()))->additional([
             'meta' => [
                 'token' => $token
             ]
@@ -57,7 +58,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-        auth()->user()->tokens()->delete();
+//        auth()->user()->tokens()->delete();
 
         return [
             'message' => 'Tokens Revoked'
