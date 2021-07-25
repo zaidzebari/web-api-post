@@ -2,82 +2,62 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TopicCreateRequest;
+use App\Http\Resources\TopicResource;
+use App\Models\Post;
 use App\Models\Topic;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class TopicController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
-        //
+        $topic = Topic::latestFirst()->paginate(5);
+        //use eager loading, this is only for test purpose!!!
+        return TopicResource::collection($topic);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function store(TopicCreateRequest $request)
     {
-        //
+        $topic = new Topic();
+        $topic->title = $request->title;
+        $topic->user()->associate($request->user());
+
+        $post = new Post();
+        $post->body = $request->body;
+        $post->user()->associate($request->user());
+
+        $topic->save();
+        $topic->posts()->save($post);
+
+        //this is not eager loading this only for test should not be used for real project!!!!
+
+        return new TopicResource($topic);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Topic $topic)
+    public function show($topic)
     {
-        //
+        $data = Topic::find($topic);
+        return new TopicResource($data);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Topic $topic)
     {
-        //
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Topic $topic)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Topic  $topic
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Topic $topic)
     {
         //
