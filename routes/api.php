@@ -31,5 +31,17 @@ Route::group(['prefix'=>'topics', 'middleware'=>'auth:sanctum'], function() {
     Route::get('/{topic}', [TopicController::class,'show']);
     Route::patch('/{topic}', [TopicController::class,'update']);
     Route::delete('/{topic}', [TopicController::class,'destroy']);
+
+    Route::group(['prefix'=>'/{topic}/posts'], function() {
+        Route::post('/', [PostController::class,'store']);
+        Route::get('/{post}', [PostController::class,'show']);
+        Route::patch('/{post}', [PostController::class,'update']);
+        Route::delete('/{post}', [PostController::class,'destroy']);
+
+    });
+
+
+
+
 });
 
