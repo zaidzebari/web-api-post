@@ -54,16 +54,18 @@ class TopicController extends Controller
 
     }
 
-    public function update(UpdateTopicRequest $request,$topic)
+    public function update(UpdateTopicRequest $request,Topic $topic)
     {
-        $myTopic = Topic::find($topic);
-        $myTopic->title = $request->title;
-        $myTopic->save();
-        return new TopicResource($myTopic);
+        $this->authorize('update', $topic);
+        $topic->title = $request->title;
+        $topic->save();
+        return new TopicResource($topic);
     }
 
     public function destroy(Topic $topic)
     {
-        //
+        $this->authorize('destroy', $topic);
+        $topic->delete();
+        return response(null, 204);
     }
 }

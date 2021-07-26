@@ -25,10 +25,11 @@ Route::post('/register',[AuthController::class, 'register']);
 Route::post('/login',[AuthController::class, 'login']);
 Route::post('/logout',[AuthController::class, 'logout']);//->middleware('auth:sanctum');
 
-Route::group(['prefix'=>'topics'], function() {
-    Route::post('/', [TopicController::class,'store'])->middleware('auth:sanctum');
-    Route::get('/', [TopicController::class,'index'])->middleware('auth:sanctum');
-    Route::get('/{topics}', [TopicController::class,'show'])->middleware('auth:sanctum');
-    Route::patch('/{topics}', [TopicController::class,'update'])->middleware('auth:sanctum');
+Route::group(['prefix'=>'topics', 'middleware'=>'auth:sanctum'], function() {
+    Route::post('/', [TopicController::class,'store']);
+    Route::get('/', [TopicController::class,'index']);
+    Route::get('/{topic}', [TopicController::class,'show']);
+    Route::patch('/{topic}', [TopicController::class,'update']);
+    Route::delete('/{topic}', [TopicController::class,'destroy']);
 });
 

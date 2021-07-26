@@ -41,4 +41,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function ownsTopic($topic) {
+        return $this->id === $topic->user->id;// this->id refer to user id
+    }
 }
