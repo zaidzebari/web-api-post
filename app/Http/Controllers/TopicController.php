@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TopicCreateRequest;
+use App\Http\Requests\UpdateTopicRequest;
 use App\Http\Resources\TopicResource;
 use App\Models\Post;
 use App\Models\Topic;
@@ -53,9 +54,12 @@ class TopicController extends Controller
 
     }
 
-    public function update(Request $request, Topic $topic)
+    public function update(UpdateTopicRequest $request,$topic)
     {
-        //
+        $myTopic = Topic::find($topic);
+        $myTopic->title = $request->title;
+        $myTopic->save();
+        return new TopicResource($myTopic);
     }
 
     public function destroy(Topic $topic)

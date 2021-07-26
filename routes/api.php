@@ -29,5 +29,6 @@ Route::group(['prefix'=>'topics'], function() {
     Route::post('/', [TopicController::class,'store'])->middleware('auth:sanctum');
     Route::get('/', [TopicController::class,'index'])->middleware('auth:sanctum');
     Route::get('/{topics}', [TopicController::class,'show'])->middleware('auth:sanctum');
+    Route::patch('/{topics}', [TopicController::class,'update'])->middleware('auth:sanctum');
 });
 
