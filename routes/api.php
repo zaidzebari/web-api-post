@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,14 +32,16 @@ Route::group(['prefix'=>'topics', 'middleware'=>'auth:sanctum'], function() {
     Route::get('/{topic}', [TopicController::class,'show']);
     Route::patch('/{topic}', [TopicController::class,'update']);
     Route::delete('/{topic}', [TopicController::class,'destroy']);
-
     Route::group(['prefix'=>'/{topic}/posts'], function() {
         Route::post('/', [PostController::class,'store']);
         Route::get('/{post}', [PostController::class,'show']);
         Route::patch('/{post}', [PostController::class,'update']);
         Route::delete('/{post}', [PostController::class,'destroy']);
-
+        Route::group(['prefix'=>'/{post}/likes'], function() {
+            Route::post('/', [LikeController::class,'store']);
+        });
     });
+
 
 
 

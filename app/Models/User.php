@@ -48,4 +48,7 @@ class User extends Authenticatable
     public function ownsPost($post) {
         return $this->id === $post->user->id;// this->id refer to user id
     }
+    public function hasLikedPost($post) {
+        return $post->likes->where('user_id', $this->id)->count() === 1;
+    }
 }

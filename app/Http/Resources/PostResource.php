@@ -22,6 +22,8 @@ class PostResource extends JsonResource
             'body' => $this->body,
             'created_at' => $this->created_at,
             'user' => $this->user,
+            'like_count' => $this->likes->count(),
+            'users' => UserResource::collection($this->likes->pluck('user')), //number of users who like the post
         ];
     }
 }
