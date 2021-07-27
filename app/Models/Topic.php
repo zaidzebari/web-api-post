@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Orderable;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,5 +18,9 @@ class Topic extends Model
     }
     public function posts() {
         return $this->hasMany(Post::class);
+    }
+    public function getCreatedAtAttribute($date)
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d');
     }
 }
