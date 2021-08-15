@@ -22,7 +22,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return new \App\Http\Resources\UserResource($request->user());
 });
 
-Route::post('/register',[AuthController::class, 'register']);
+// Route::post('/register',[AuthController::class, 'register']);
+Route::post('/register',function(Request $request) {
+    return $request->all();
+});
+Route::post('/zaid',function () {
+    return 'yes yes';
+});
 Route::post('/login',[AuthController::class, 'login']);
 Route::post('/logout',[AuthController::class, 'logout']);//->middleware('auth:sanctum');
 

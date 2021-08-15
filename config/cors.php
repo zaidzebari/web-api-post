@@ -16,7 +16,7 @@ return [
     */
     "Accept"=>"application/json",
 
-    'paths' => ['api/*', 'sanctum/csrf-token'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
     'allowed_methods' => ['*'],
 

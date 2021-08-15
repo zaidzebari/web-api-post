@@ -12,6 +12,7 @@ class AuthController extends Controller
 {
     public function register(UserRegisterRequest $request)
     {
+        return 'yes yes';
         $user = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
@@ -58,8 +59,7 @@ class AuthController extends Controller
 
     public function logout()
     {
-//        auth()->user()->tokens()->delete();
-
+        auth()->user()->tokens()->delete();
         return [
             'message' => 'Tokens Revoked'
         ];
